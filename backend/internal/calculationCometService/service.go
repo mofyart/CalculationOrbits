@@ -3,6 +3,8 @@ package calculationCometService
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
+	"io"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -46,10 +48,12 @@ func (service *calculationCometService) CreateCometCalculation(requestCometInfo 
 
 	defer requestToCalculate.Body.Close()
 
-	// if requestToCalculate.StatusCode != http.StatusOK {
-	// 	io.Copy(io.Discard, requestToCalculate.Body)
-	// 	return CometAllCharestic{}, echo.Map{"error": "python calculation is failed"}
-	// }
+	if requestToCalculate.StatusCode != http.StatusOK {
+		io.Copy(io.Discard, requestToCalculate.Body)
+		err := errors.New("python calculation is failed")
+
+		return CometAllCharestic{}, err
+	}
 
 	var orbCharacter OrbitalCharestic
 
