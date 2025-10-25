@@ -4,6 +4,9 @@ from pydantic import BaseModel, BeforeValidator, PlainSerializer
 from typing import List, Optional, Annotated
 from datetime import datetime
 
+from astra.astra import CalculateOrbitFromObservations
+
+
 app = FastAPI()
 
 
@@ -25,12 +28,4 @@ class ObservationsData(BaseModel):
 
 @app.post("/get_orbit")
 def calculate_observation(observations: ObservationsData):
-    return {
-        "a": 0.0,
-        "e": 0.0,
-        "i": 0.0,
-        "Omega": 0.0,
-        "omega": 0.0,
-        "nu": 0.0,
-        "epoch": 0,
-    }
+    return CalculateOrbitFromObservations(observations.observations)

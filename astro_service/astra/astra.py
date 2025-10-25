@@ -14,7 +14,7 @@ from poliastro.bodies import Sun
 from scipy.optimize import least_squares
 
 @dataclass
-class Observation:
+class AstraObservation:
     date: Time
     directAscension: float
     celestialDeclination: float
@@ -74,7 +74,7 @@ def ConvertOrbitToEcliptic(orbit: Orbit) -> dict:
     
     return orbitEcl
 
-def DetermineOrbit(observations: List[Observation]) -> Orbit:
+def DetermineOrbit(observations: List[AstraObservation]) -> Orbit:
     observations.sort(key=lambda obs: obs.date.jd)
     epochIndex = len(observations) // 2
     epoch = observations[epochIndex].date
@@ -145,10 +145,10 @@ def DetermineOrbit(observations: List[Observation]) -> Orbit:
 
 def CalculateOrbitFromObservations(observationData: List[Dict]) -> Dict:
     observations = [
-        Observation(
-            date=Time(obs['time'], scale='utc'),
-            directAscension=float(obs['ra_deg']),
-            celestialDeclination=float(obs['dec_deg'])
+        AstraObservation(
+            date=Time(obs.date, scale='utc'),
+            directAscension=obs.directАscension,
+            celestialDeclination=obs.celestialDeclination,
         ) for obs in observationData
     ]
     
@@ -161,7 +161,8 @@ def CalculateOrbitFromObservations(observationData: List[Dict]) -> Dict:
         'i': orbit_ecliptic.inc.to(u.deg).value,
         'Omega': orbit_ecliptic.raan.to(u.deg).value,
         'omega': orbit_ecliptic.argp.to(u.deg).value,
-        'nu': orbit_ecliptic.nu.to(u.deg).value
+        'nu': orbit_ecliptic.nu.to(u.deg).value,
+        'epoch': orbit_ecliptic.epoch.iso
     }
     
     return result
