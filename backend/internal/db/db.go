@@ -11,7 +11,7 @@ import (
 var database *gorm.DB
 
 func InitDB() (*gorm.DB, error) {
-	dataSourceName := "host=localhost user=postgres password=art dbname=postgres port=5432 sslmode=disable"
+	dataSourceName := "host=http://postgres user=postgres password=postgres dbname=postgres port=5432 sslmode=disable"
 
 	var err error
 
