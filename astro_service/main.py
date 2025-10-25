@@ -30,5 +30,4 @@ class ObservationsData(BaseModel):
 
 @app.post("/get_orbit")
 def calculate_observation(observations: ObservationsData):
-    result = CalculateOrbitFromObservations(observations.observations)
-    return result
+    return CalculateOrbitFromObservations(observations.observations)
