@@ -20,6 +20,12 @@ services:
       dockerfile: Dockerfile
     container_name: backend-app
     restart: unless-stopped
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=postgres
     depends_on:
       - astra-backend
       - postgres
