@@ -14,14 +14,14 @@ services:
     container_name: backend-astra
     restart: unless-stop
 
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: backend-app
-    restart: unless-stop
-    depends_on:
-      - astra-backend
+  # backend:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: Dockerfile
+  #   container_name: backend-app
+  #   restart: unless-stop
+  #   depends_on:
+  #     - astra-backend
 
   nginx:
     image: nginx:1.25-alpine
