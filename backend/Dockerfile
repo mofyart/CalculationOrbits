@@ -14,4 +14,6 @@ FROM scratch
 
 COPY --from=builder /my-app /my-app
 
+EXPOSE 9090
+
 CMD ["/my-app"]

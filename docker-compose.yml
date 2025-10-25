@@ -7,14 +7,21 @@ services:
     volumes:
       - react-build:/app/build
 
+  astra-backend:
+    build:
+      context: ./astro-service
+      dockerfile: Dockerfile
+    container-name: backend-astra
+    restart: unsless-stop
+
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: backend-app
     restart: unless-stop
-    expose:
-      - "9090"
+    depends_on:
+      - astra-backend
 
   nginx:
     image: nginx:1.25-alpine
