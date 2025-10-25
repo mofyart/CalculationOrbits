@@ -13,6 +13,7 @@ CustomDatetime = Annotated[
     PlainSerializer(lambda x: x.strftime('%Y-%m-%dT%H:%M:%S') if x else None)
 ]
 
+
 class Observation(BaseModel):
     directАscension: float
     celestialDeclination: float

@@ -11,8 +11,8 @@ services:
     build:
       context: ./astro-service
       dockerfile: Dockerfile
-    container-name: backend-astra
-    restart: unsless-stop
+    container_name: backend-astra
+    restart: unless-stop
 
   backend:
     build:
