@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Header from './components/Header';
 import ObservationsForm from './components/ObservationsForm';
+import Orbit from './components/OrbitData';
 
 function RightBar() {
   return (
@@ -25,18 +26,16 @@ function Main() {
   return (
     <>
       <p>
-        Main!
+        Astro Boy!
       </p>
 
       <ObservationsForm
         handleOrbitData={handleOrbitDataResponse}
       />
 
-      <div>
+      <div className="mt-5">
         {orbitData && (
-          <div>
-            {JSON.stringify(orbitData)}
-          </div>
+          <Orbit data={orbitData} />
         )}
       </div>
     </>

@@ -4,6 +4,8 @@ from pydantic import BaseModel, BeforeValidator, PlainSerializer
 from typing import List, Optional, Annotated
 from datetime import datetime
 
+import json
+
 from astra.astra import CalculateOrbitFromObservations
 
 
