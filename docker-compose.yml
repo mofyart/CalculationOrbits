@@ -1,0 +1,22 @@
+services:
+  frontend:
+    build:
+      context: ./frontend/app
+      dockerfile: Dockerfile
+    container_name: frontend-builder
+    volumes:
+      - react-build:/app/build
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: web-server
+    ports:
+      - "80:80"
+    volumes:
+      - react-build:/usr/share/nginx/html:ro
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+
+volumes:
+  react-build:

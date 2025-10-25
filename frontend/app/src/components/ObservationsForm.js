@@ -97,10 +97,6 @@ function ObservationsForm({ handleOrbitData }) {
             body: data,
         });
 
-        // const response ={
-        //     "Hello": "Hello"
-        // };
-
         handleOrbitData(response);
     }
 
@@ -121,8 +117,8 @@ function ObservationsForm({ handleOrbitData }) {
                     <button className="w-100" onClick={addRow}>+</button>
                 </div>
                 
-                <button onClick={() => {console.log(performCalculations())}}>
-                    Рассчет!
+                <button onClick={() => {performCalculations()}}>
+                    Рассчитать орбиту
                 </button>
             </div>
         </>
