@@ -1,19 +1,23 @@
-FROM golang:1.19 AS builder
-
+FROM golang:1.23 AS builder
 WORKDIR /app
-
 COPY go.mod go.sum ./
-
 RUN go mod download
+COPY . .
 
-COPY *.go ./
+# Статическая сборка для Alpine
+ENV CGO_ENABLED=0
+RUN go build -o app ./cmd/main.go
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /my-app
 
-FROM scratch
+FROM alpine:latest
+WORKDIR /root/
 
-COPY --from=builder /my-app /my-app
+# Копируем бинарник
+COPY --from=builder /app/app .
+
+# Даём права на выполнение
+RUN chmod +x ./app
 
 EXPOSE 9090
 
-CMD ["/my-app"]
+CMD ["./app"]
