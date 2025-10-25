@@ -1,23 +1,30 @@
-FROM golang:1.23 AS builder
+FROM golang:1.21-alpine AS builder
+
 WORKDIR /app
+
+# Копируем go.mod и go.sum
 COPY go.mod go.sum ./
 RUN go mod download
+
+# Копируем весь код
 COPY . .
 
-# Статическая сборка для Alpine
-ENV CGO_ENABLED=0
-RUN go build -o app ./cmd/main.go
+# Собираем приложение
+RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/main.go
 
-
+# Финальный образ
 FROM alpine:latest
+
+RUN apk --no-cache add ca-certificates
+
 WORKDIR /root/
 
-# Копируем бинарник
-COPY --from=builder /app/app .
+# Копируем бинарник из builder
+COPY --from=builder /app/main .
 
-# Даём права на выполнение
-RUN chmod +x ./app
+# Если есть .env файл (опционально, лучше через environment в docker-compose)
+# COPY .env .
 
-EXPOSE 9090
+EXPOSE 8080
 
-CMD ["./app"]
+CMD ["./main"]

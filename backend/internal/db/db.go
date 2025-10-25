@@ -38,7 +38,6 @@ func InitDB() (*gorm.DB, error) {
 		return nil, fmt.Errorf("could not connect to database: %w", err)
 	}
 
-	// Проверка подключения
 	sqlDB, err := database.DB()
 	if err != nil {
 		return nil, fmt.Errorf("could not get database instance: %w", err)
