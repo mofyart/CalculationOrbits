@@ -73,7 +73,7 @@ export default function OrbitVisualization({ cometParams }) {
   };
 
   return (
-    <div style={{ width: '100%', height: '100vh', background: '#000' }}>
+    <div style={{ width: '100%', height: '50hv', background: '#000' }}>
       <Canvas camera={{ position: [300, 200, 300], fov: 60 }}>
         <ambientLight intensity={0.3} />
         <pointLight position={[0, 0, 0]} intensity={2} />
