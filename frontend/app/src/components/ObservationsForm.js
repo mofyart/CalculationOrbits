@@ -89,13 +89,15 @@ function ObservationsForm({ handleOrbitData }) {
     const performCalculations = async () => {
         const data = getJson();
 
-        const response = await fetch('/api/get_orbit', {
+        const response = await fetch('api/get_orbit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: data,
         });
+
+        // Hello World
 
         // const response = {
         //     "a": 1.505173,
@@ -107,7 +109,9 @@ function ObservationsForm({ handleOrbitData }) {
         //     "epoch": "2000-01-01 00:00:00.000",
         // };
 
-        handleOrbitData(response);
+        const calculatedData = await response.json();
+        console.log(calculatedData);
+        handleOrbitData(calculatedData);
     }
 
     return (
