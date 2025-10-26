@@ -3,6 +3,7 @@ package calculationCometService
 type CometAllCharestic struct {
 	ID           string           `gorm:"primaryKey" json:"id"`
 	CharesticID  string           `gorm:"uniqueIndex" json:"charesticId"`
+	NameComet    string           `json:"nameComet"`
 	Charestic    OrbitalCharestic `gorm:"foreignKey:CharesticID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"orbitalCharestic"`
 	Observations []Observation    `gorm:"foreignKey:CometID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"observations"`
 }
@@ -28,5 +29,6 @@ type Observation struct {
 }
 
 type CometObservationsRequest struct {
+	NameComet    string        `json:"nameComet"`
 	Observations []Observation `json:"observations"`
 }
