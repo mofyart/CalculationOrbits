@@ -99,7 +99,7 @@ def CalculateCometApproachData(orbit: Orbit,
     )
     
     result = {
-        'dateOfClosestApproach': closestApproach.dateOfClosestApproach.iso,
+        'dateOfClosestApproach': closestApproach.dateOfClosestApproach.to_datetime().strftime("%Y-%m-%dT%H:%M:%S"),
         'minimumDistanceAU': closestApproach.minimumDistance,
     }
     
