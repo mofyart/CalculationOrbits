@@ -16,6 +16,8 @@ services:
       dockerfile: Dockerfile
     container_name: backend-astra
     restart: unless-stopped
+    ports:
+      - "8000:8000"
 
   backend:
     build:
@@ -23,6 +25,8 @@ services:
       dockerfile: Dockerfile
     container_name: backend-app
     restart: unless-stopped
+    ports:
+      - "9090:9090"
     environment:
       - DB_HOST=postgres
       - DB_PORT=5432

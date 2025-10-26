@@ -26,10 +26,10 @@ func main() {
 	astroEcho.Use(middleware.CORS())
 	astroEcho.Use(middleware.Logger())
 
-	astroEcho.GET("/cometCalculation", astroHandlers.GetCometObseravtion)
-	astroEcho.POST("/cometCalculation", astroHandlers.PostCometObservation)
+	astroEcho.GET("/api/cometCalculation", astroHandlers.GetCometObseravtion)
+	astroEcho.POST("/api/cometCalculation", astroHandlers.PostCometObservation)
 	// astroEcho.PATCH("/cometCalculation/:id", patchCalculations)
-	astroEcho.DELETE("/cometCalculation/:id", astroHandlers.DeleteCometObservation)
+	astroEcho.DELETE("/api/cometCalculation/:id", astroHandlers.DeleteCometObservation)
 
-	astroEcho.Start("localhost:9090")
+	astroEcho.Start(":9090")
 }

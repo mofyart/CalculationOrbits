@@ -19,17 +19,23 @@ func (hand *CalculationCometHandler) PostCometObservation(context echo.Context) 
 	var requestCometInfo calculationCometService.CometObservationsRequest
 
 	if err := context.Bind(&requestCometInfo); err != nil {
-		return context.JSON(http.StatusBadRequest, map[string]string{"error": "Ivalid request"})
+		return context.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
 	}
 
 	if len(requestCometInfo.Observations) < 5 {
 		return context.JSON(http.StatusBadRequest, map[string]string{"error": "Count obseravtions must be > 4"})
 	}
 
-	cometAllInfo, err := hand.service.CreateCometCalculation(requestCometInfo)
+	// cometAllInfo, err := hand.service.CreateCometCalculation(requestCometInfo)
 
+	// if err != nil {
+	// 	return context.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
+	// }
+
+	cometAllInfo, err := hand.service.CreateCometCalculation(requestCometInfo)
 	if err != nil {
-		return context.JSON(http.StatusBadRequest, map[string]string{"error": "Ivalid request"})
+		// ВРЕМЕННЫЙ ВАРИАНТ ДЛЯ ДЕБАГА:
+		return context.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
 
 	return context.JSON(http.StatusOK, cometAllInfo.Charestic)

@@ -12,7 +12,7 @@ function ObservationInput({ index, onChange, onDelete }) {
             <input
                 className="Observation-Input-Coordinates w-100"
                 type="text"
-                name="directАscension"
+                name="directAscension"
                 onChange={(e) => onChange(index, e)}
             >
             </input>
@@ -53,7 +53,7 @@ function ObservationsForm({ handleOrbitData }) {
 
     const createRow = () => ({
         id: rowId.current++,
-        directАscension: '',
+        directAscension: '',
         celestialDeclination: '',
         date: '',
     });
@@ -89,7 +89,7 @@ function ObservationsForm({ handleOrbitData }) {
     const performCalculations = async () => {
         const data = getJson();
 
-        const response = await fetch('api/get_orbit', {
+        const response = await fetch('/api/cometCalculation', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -130,7 +130,7 @@ function ObservationsForm({ handleOrbitData }) {
                 <div className="col-12 mb-3">
                     <button className="w-100" onClick={addRow}>+</button>
                 </div>
-                
+
                 <button onClick={() => {performCalculations()}}>
                     Рассчитать орбиту
                 </button>

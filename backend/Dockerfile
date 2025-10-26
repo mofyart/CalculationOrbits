@@ -25,6 +25,6 @@ COPY --from=builder /app/main .
 # Если есть .env файл (опционально, лучше через environment в docker-compose)
 # COPY .env .
 
-EXPOSE 8080
+EXPOSE 9090
 
 CMD ["./main"]

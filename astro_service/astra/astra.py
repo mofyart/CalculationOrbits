@@ -50,7 +50,7 @@ def ConvertOrbitToEcliptic(orbit: Orbit) -> dict:
         posEcliptic.cartesian.y.to(u.au).value,
         posEcliptic.cartesian.z.to(u.au).value
     ])
-    
+
     velIcrs = SkyCoord(
         x=(rIcrs[0] + vIcrs[0]) * u.au,
         y=(rIcrs[1] + vIcrs[1]) * u.au,
@@ -71,17 +71,17 @@ def ConvertOrbitToEcliptic(orbit: Orbit) -> dict:
         v=vEcl * u.au / u.day,
         epoch=orbit.epoch
     )
-    
+
     return orbitEcl
 
 def DetermineOrbit(observations: List[AstraObservation]) -> Orbit:
     observations.sort(key=lambda obs: obs.date.jd)
     epochIndex = len(observations) // 2
     epoch = observations[epochIndex].date
-    
+
     def CalculateResiduals(elementsArray: np.ndarray) -> np.ndarray:
         semiMajorAxis, eccentricity, inclination, raan, argOfPericenter, trueAnomaly = elementsArray
-        
+
         orbit = Orbit.from_classical(
             attractor=Sun,
             a=semiMajorAxis * u.au,
@@ -92,9 +92,9 @@ def DetermineOrbit(observations: List[AstraObservation]) -> Orbit:
             nu=trueAnomaly * u.deg,
             epoch=epoch
         )
-        
+
         residualsList = []
-        
+
         for observation in observations:
             timeDelta = (observation.date.jd - epoch.jd) * u.day
             propagatedOrbit = orbit.propagate(timeDelta)
@@ -102,22 +102,22 @@ def DetermineOrbit(observations: List[AstraObservation]) -> Orbit:
             earthHeliocentric = GetEarthPosition(observation.date)
             cometGeocentric = cometHeliocentric - earthHeliocentric
             predictedRa, predictedDec = ConvertCartesianToRadec(cometGeocentric)
-            
+
             raResidual = predictedRa - observation.directAscension
             if raResidual > 180:
                 raResidual -= 360
             if raResidual < -180:
                 raResidual += 360
-            
+
             decResidual = predictedDec - observation.celestialDeclination
             residualsList.extend([raResidual, decResidual])
-        
+
         return np.array(residualsList)
-    
+
     initialGuess = [3.0, 0.5, 10.0, 20.0, 30.0, 40.0]
     lowerBounds = [0.1, 0.0, 0.0, 0.0, 0.0, 0.0]
     upperBounds = [1000.0, 1.5, 180.0, 360.0, 360.0, 360.0]
-    
+
     optimizationResult = least_squares(
         CalculateResiduals,
         initialGuess,
@@ -127,7 +127,7 @@ def DetermineOrbit(observations: List[AstraObservation]) -> Orbit:
         gtol=1e-9,
         verbose=0
     )
-    
+
     finalA, finalE, finalI, finalOmega, finalOmegaSmall, finalNu = optimizationResult.x
 
     orbit = Orbit.from_classical(
@@ -140,21 +140,21 @@ def DetermineOrbit(observations: List[AstraObservation]) -> Orbit:
         nu=finalNu * u.deg,
         epoch=epoch
     )
-    
+
     return orbit
 
 def CalculateOrbitFromObservations(observationData: List[Dict]) -> Dict:
     observations = [
         AstraObservation(
             date=Time(obs.date, scale='utc'),
-            directAscension=obs.directАscension,
+            directAscension=obs.directAscension,
             celestialDeclination=obs.celestialDeclination,
         ) for obs in observationData
     ]
-    
+
     orbit_icrs = DetermineOrbit(observations)
     orbit_ecliptic = ConvertOrbitToEcliptic(orbit_icrs)
-    
+
     result = {
         'a': orbit_ecliptic.a.to(u.AU).value,
         'e': orbit_ecliptic.ecc.value,
@@ -164,5 +164,5 @@ def CalculateOrbitFromObservations(observationData: List[Dict]) -> Dict:
         'nu': orbit_ecliptic.nu.to(u.deg).value,
         'epoch': orbit_ecliptic.epoch.iso
     }
-    
+
     return result

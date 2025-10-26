@@ -20,8 +20,8 @@ CustomDatetime = Annotated[
 
 
 class Observation(BaseModel):
-    directАscension: float
-    celestialDeclination: float
+    directAscension: str
+    celestialDeclination: str
     date: CustomDatetime = None
 
 class ObservationsData(BaseModel):
@@ -30,4 +30,9 @@ class ObservationsData(BaseModel):
 
 @app.post("/get_orbit")
 def calculate_observation(observations: ObservationsData):
-    return CalculateOrbitFromObservations(observations.observations)
+    for observ in observations.observations:
+        observ.directAscension = float(observ.directAscension)
+        observ.celestialDeclination = float(observ.celestialDeclination)
+
+    result = CalculateOrbitFromObservations(observations.observations)
+    return result

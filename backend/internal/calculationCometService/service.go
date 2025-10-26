@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 
@@ -28,13 +29,14 @@ func NewCalculationCometService(repo CometCalculationRepository) CalculationCome
 func (service *calculationCometService) CreateCometCalculation(requestCometInfo CometObservationsRequest) (CometAllCharestic, error) {
 	cometInfo := CometAllCharestic{
 		ID:           uuid.NewString(),
+		CharesticID:  uuid.NewString(),
 		Observations: requestCometInfo.Observations,
-		Picture:      requestCometInfo.Picture,
 	}
 
-	pythonServiceURL := "http://someurl-host:8080/some_route"
+	pythonServiceURL := "http://backend-astra:8000/get_orbit"
 
-	observationsJSON, marshallErr := json.Marshal(cometInfo.Observations)
+	loadObservations := CometObservationsRequest{Observations: cometInfo.Observations}
+	observationsJSON, marshallErr := json.Marshal(loadObservations)
 
 	if marshallErr != nil {
 		return CometAllCharestic{}, marshallErr
@@ -57,15 +59,17 @@ func (service *calculationCometService) CreateCometCalculation(requestCometInfo 
 
 	var orbCharacter OrbitalCharestic
 
-	if err := json.NewDecoder(requestToCalculate.Body).Decode(&orbCharacter); err != nil {
+	bodyBytes, _ := io.ReadAll(requestToCalculate.Body)
+
+	fmt.Println("Response from Python service:", string(bodyBytes))
+
+	if err := json.NewDecoder(bytes.NewReader(bodyBytes)).Decode(&orbCharacter); err != nil {
 		return CometAllCharestic{}, err
 	}
 
+	fmt.Println("Response from Decoder service:", orbCharacter)
+
 	cometInfo.Charestic = orbCharacter
-
-	var orbitalCharestic OrbitalCharestic
-
-	cometInfo.Charestic = orbitalCharestic
 
 	if err := service.repository.CreateCometCalculation(cometInfo); err != nil {
 		return CometAllCharestic{}, err
