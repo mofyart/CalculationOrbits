@@ -23,7 +23,7 @@ func main() {
 	astroService := calculationCometService.NewCalculationCometService(astroRepository)
 	astroHandlers := handlers.NewCalculationCometHandler(astroService)
 
-	astroEcho.Use(middleware.CORS())
+	astroEcho.Use(middleware.CORSWithConfig(middleware.CORSConfig{AllowOrigins: []string{"https://localhost:9090"}, AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodDelete}, AllowCredentials: true, MaxAge: 300}))
 	astroEcho.Use(middleware.Logger())
 
 	astroEcho.GET("/api/cometCalculation", astroHandlers.GetCometObseravtion)
