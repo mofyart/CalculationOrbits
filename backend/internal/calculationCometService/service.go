@@ -33,9 +33,14 @@ func (service *calculationCometService) CreateCometCalculation(requestCometInfo 
 		Observations: requestCometInfo.Observations,
 	}
 
+	for id, _ := range cometInfo.Observations {
+		cometInfo.Observations[id].ID = uuid.NewString()
+		cometInfo.Observations[id].CometID = cometInfo.ID
+	}
+
 	pythonServiceURL := "http://backend-astra:8000/get_orbit"
 
-	loadObservations := CometObservationsRequest{Observations: cometInfo.Observations}
+	loadObservations := CometObservationsRequest{Observations: requestCometInfo.Observations}
 	observationsJSON, marshallErr := json.Marshal(loadObservations)
 
 	if marshallErr != nil {

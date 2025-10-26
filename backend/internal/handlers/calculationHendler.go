@@ -22,9 +22,9 @@ func (hand *CalculationCometHandler) PostCometObservation(context echo.Context) 
 		return context.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
 	}
 
-	// if len(requestCometInfo.Observations) < 5 {
-	// 	return context.JSON(http.StatusBadRequest, map[string]string{"error": "Count obseravtions must be > 4"})
-	// }
+	if len(requestCometInfo.Observations) < 5 {
+		return context.JSON(http.StatusBadRequest, map[string]string{"error": "Count obseravtions must be > 4"})
+	}
 
 	// cometAllInfo, err := hand.service.CreateCometCalculation(requestCometInfo)
 
