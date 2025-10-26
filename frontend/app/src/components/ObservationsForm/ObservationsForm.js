@@ -156,7 +156,7 @@ function ObservationsForm({ handleOrbitData, initialData, onDataSubmit }) {
                     <span className="fw-bold">Восхождение</span>
                 </div>
                 <div className="col-3">
-                    <span className="fw-bold">Сколонение</span>
+                    <span className="fw-bold">Склонение</span>
                 </div>
                 <div className="col-6">
                     <span className="fw-bold">Дата и время</span>
