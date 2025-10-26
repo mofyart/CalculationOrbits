@@ -99,14 +99,6 @@ function ObservationsForm({ handleOrbitData }) {
         const response = await astroService.getOrbitData(data);
         const orbitData = await response.json();
 
-        // const response = await fetch('api/get_orbit', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: data,
-        // });
-
         // const response = {
         //     "a": 1.505173,
         //     "e": 0.086673,
@@ -117,10 +109,7 @@ function ObservationsForm({ handleOrbitData }) {
         //     "epoch": "2000-01-01 00:00:00.000",
         // };
 
-        // const calculatedData = await response.json();
-        // console.log(calculatedData);
-        // handleOrbitData(calculatedData);
-        handleOrbitData(response);
+        handleOrbitData(orbitData);
     }
 
     return (

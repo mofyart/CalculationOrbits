@@ -46,24 +46,6 @@ class ObservationsList(BaseModel):
     observations: List[Observation]
 
 
-# LargeSemiAxis          string `json:"largeSemiAxis"`
-# Eccentricity           string `json:"eccentricity"`
-# Inclination            string `json:"inclination"`
-# LongitudeAscendingNode string `json:"longitude"`
-# Pericenter             string `json:"pericenter"`
-# TrueAnomaly            string `json:"trueAnomaly"`
-# Date                   string `json:"date"`
-
-# result = {
-#     'a': orbit_ecliptic.a.to(u.AU).value,
-#     'e': orbit_ecliptic.ecc.value,
-#     'i': orbit_ecliptic.inc.to(u.deg).value,
-#     'Omega': orbit_ecliptic.raan.to(u.deg).value,
-#     'omega': orbit_ecliptic.argp.to(u.deg).value,
-#     'nu': orbit_ecliptic.nu.to(u.deg).value,
-#     'epoch': orbit_ecliptic.epoch.iso
-# }
-
 class OrbitData(BaseModel):
     largeSemiAxis: float = Field(alias="largeSemiAxis")
     eccentricity: float = Field(alias="eccentricity")
@@ -71,6 +53,8 @@ class OrbitData(BaseModel):
     longitude: float = Field(alias="longitude")
     pericenter: float = Field(alias="pericenter")
     trueAnomaly: float = Field(alias="trueAnomaly")
+    minDistance: float = Field(alias="minDistance")
+    minApproximationDate: AstropyDatetime = Field(alias="minApproximationDate")
 
 
 if __name__ == "__main__":

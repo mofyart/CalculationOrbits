@@ -166,6 +166,8 @@ def CalculateOrbitFromObservations(observationsList: ObservationsList) -> Dict:
         'longitude': orbit_ecliptic.raan.to(u.deg).value,
         'pericenter': orbit_ecliptic.argp.to(u.deg).value,
         'trueAnomaly': orbit_ecliptic.nu.to(u.deg).value,
+        'minDistance': '0.0',
+        'minApproximationDate': '1111-11-11T11:11:11',
         'epoch': orbit_ecliptic.epoch.iso
     }
 
