@@ -1,9 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-<<<<<<< HEAD
-=======
 
->>>>>>> 175982b (add delete)
 
 import { useState } from 'react';
 
