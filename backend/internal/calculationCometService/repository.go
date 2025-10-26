@@ -26,7 +26,11 @@ func (repository *cometRepository) CreateCometCalculation(comet CometAllCharesti
 func (repository *cometRepository) GetAllCometsCalculation() ([]CometAllCharestic, error) {
 	var cometsInfo []CometAllCharestic
 
-	err := repository.database.Find(&cometsInfo).Error
+	err := repository.database.
+		Preload("Observations").
+		Preload("Charestic").
+		Where("id IS NOT NULL").
+		Find(&cometsInfo).Error
 
 	return cometsInfo, err
 }
@@ -34,7 +38,10 @@ func (repository *cometRepository) GetAllCometsCalculation() ([]CometAllCharesti
 func (repository *cometRepository) GetCometCalculation(id string) (CometAllCharestic, error) {
 	var comet CometAllCharestic
 
-	err := repository.database.First(&comet, "id = ?", id).Error
+	err := repository.database.
+		Preload("Observations").
+		Preload("Charestic").
+		First(&comet, "id = ?", id).Error
 
 	return comet, err
 }
