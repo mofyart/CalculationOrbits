@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Line, Text, Grid, OrbitControls } from '@react-three/drei'; // Добавлен OrbitControls
+import { Line, Text, Grid, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
 // --- Константы и Хелперы ---
@@ -51,8 +51,6 @@ function generateOrbitPoints(largeSemiAxis, eccentricity, inclination, pericente
     const pos = getOrbitalPosition(largeSemiAxis, eccentricity, inclination, pericenter, longitude, trueAnomaly);
     
     // Преобразуем [x, y, z] (АЕ) в координаты сцены [x, z, -y]
-    // Y (орбитальный) становится -Z (сцены), Z (орбитальный) становится Y (сцены)
-    // Это стандартная Y-up конфигурация для 3D
     points.push(new THREE.Vector3(pos[0] * SCALE, pos[2] * SCALE, -pos[1] * SCALE));
   }
   return points;
@@ -151,18 +149,37 @@ function OrbitVisualization({ cometParams }) {
     longitude: 0,
   };
 
-  // Убрана логика статической камеры.
-  // Установим хорошую стартовую позицию для OrbitControls.
-  const cameraPos = [
-    3 * SCALE, // 3 АЕ в стороне
-    2 * SCALE, // 2 АЕ "выше" (по Y сцены)
-    3 * SCALE  // 3 АЕ "позади" (по Z сцены)
+  // Вычисляем текущее положение кометы для настройки камеры и цели
+  const cometPosRaw = getOrbitalPosition(
+    cometParams.largeSemiAxis,
+    cometParams.eccentricity,
+    cometParams.inclination,
+    cometParams.pericenter,
+    cometParams.longitude,
+    cometParams.trueAnomaly
+  );
+  
+  // Преобразуем в координаты сцены
+  const cometPosVec = [
+    cometPosRaw[0] * SCALE,
+    cometPosRaw[2] * SCALE,
+    -cometPosRaw[1] * SCALE
+  ];
+
+  // Установим стартовую позицию камеры ОТНОСИТЕЛЬНО кометы
+  const initialCameraPos = [
+    cometPosVec[0] + 3 * SCALE, // 3 АЕ в стороне от кометы
+    cometPosVec[1] + 2 * SCALE, // 2 АЕ "выше" кометы
+    cometPosVec[2] + 3 * SCALE  // 3 АЕ "позади" кометы
   ];
 
   return (
     // Используем 100vh для заполнения всего экрана
-    <div style={{ width: '100%', height: '100vh', background: '#000' }}>
-      <Canvas camera={{ position: cameraPos, fov: 60 }}>
+    <div style={{ width: '100%', height: '70vh', background: '#000' }}>
+      {/* ДОБАВЛЕНО 'far: 50000' - Увеличивает дальность прорисовки 
+        (решает проблему "далеко rander")
+      */}
+      <Canvas camera={{ position: initialCameraPos, fov: 60, far: 50000 }}>
         {/* Окружающий свет */}
         <ambientLight intensity={0.2} />
         
@@ -172,18 +189,20 @@ function OrbitVisualization({ cometParams }) {
         {/* Желтые оси координат */}
         <YellowAxes />
         
-        {/* Координатная сетка на плоскости эклиптики (XZ) */}
-        <Grid
+        {/* Координатная сетка на плоскости эклиптики (XZ)
+          Цвета уже белые, как вы и просили ("линии белыми")
+        */}
+        {/* <Grid
           args={[40 * SCALE, 40]}   // Сетка 40x40 АЕ
           cellSize={SCALE}          // Размер ячейки = 1 АЕ (100 единиц)
-          cellColor="#FFFFFF"      // Цвет линий ячеек (ИЗМЕНЕН НА БЕЛЫЙ)
-          sectionColor="#FFFFFF"   // Цвет главных линий (ИЗМЕНЕН НА БЕЛЫЙ)
+          cellColor="#FFFFFF"      // Цвет линий ячеек (БЕЛЫЙ)
+          sectionColor="#FFFFFF"   // Цвет главных линий (БЕЛЫЙ)
           cellThickness={0.5}
           sectionThickness={1}
           fadeDistance={150 * SCALE} // Сетка исчезает на расстоянии
           fadeStrength={1}
           infiniteGrid={true}       // Бесконечная сетка
-        />
+        /> */}
 
         {/* Орбита Земли */}
         <Orbit
@@ -231,8 +250,10 @@ function OrbitVisualization({ cometParams }) {
           label="Comet"
         />
         
-        {/* Добавлены OrbitControls для управления камерой */}
-        <OrbitControls />
+        {/* ДОБАВЛЕНО 'target={cometPosVec}'
+          Камера теперь вращается ВОКРУГ кометы, а не вокруг Солнца.
+        */}
+        <OrbitControls target={cometPosVec} />
         
       </Canvas>
     </div>
