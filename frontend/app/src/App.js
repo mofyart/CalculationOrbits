@@ -26,7 +26,7 @@ function Main() {
 }
 
 function App() {
-  const title = "astro";
+  const title = "Don't look up";
 
   return (
     <div>

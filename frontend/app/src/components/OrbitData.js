@@ -8,37 +8,37 @@ function Orbit({ data }) {
             <div className="row">
                 <div className="col-6">
                     <tt className="d-block">
-                        A = {data.a}
+                        A = {data.largeSemiAxis}
                     </tt>
 
                     <tt className="d-block">
-                        E = {data.e}
+                        E = {data.eccentricity}
                     </tt>
 
                     <tt className="d-block">
-                        I = {data.i}
+                        I = {data.inclination}
                     </tt>
 
                     <tt className="d-block">
-                        &Omega; = {data.Omega}
+                        &Omega; = {data.longitude}
                     </tt>
 
                     <tt className="d-block">
-                        &omega; = {data.omega}
+                        &omega; = {data.pericenter}
                     </tt>
 
                     <tt className="d-block">
-                        &nu; = {data.nu}
+                        &nu; = {data.trueAnomaly}
                     </tt>
                 </div>
 
                 <div className="col-6">
                     <tt className="d-block">
-                        Минимальное расстояние = 0
+                        Минимальное расстояние = {data.minDistance}
                     </tt>
 
                     <tt className="d-block">
-                        Дата = 0
+                        Дата сближения = {data.minApproximationDate}
                     </tt>
                 </div>
             </div>
