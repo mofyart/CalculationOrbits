@@ -11,8 +11,8 @@ import astroService from '../../api/apiClient';
 function validateRow(row) {
   const errors = {};
 
-  if (!row.directАscension.trim()) {
-    errors.directАscension = 'Пустое поле';
+  if (!row.directAscension.trim()) {
+    errors.directAscension = 'Пустое поле';
   }
 
   if (!row.celestialDeclination.trim()) {
@@ -38,7 +38,7 @@ function ObservationsForm({ handleOrbitData }) {
 
     const createRow = () => ({
         id: rowId.current++,
-        directАscension: '',
+        directAscension: '',
         celestialDeclination: '',
         date: '',
     });
