@@ -21,7 +21,7 @@ def validate_astropy_time(val: str):
         )
     except Exception as e:
         raise ValueError(f"Неправильный формат времени, правильно %Y-%m-%dT%H:%M:%S: {e}")
-    
+
 
 def serialize_astropy_time(time_obj: Time) -> str:
     return time_obj.to_value(format="datetime").strftime("%Y-%m-%dT%H:%M:%S")

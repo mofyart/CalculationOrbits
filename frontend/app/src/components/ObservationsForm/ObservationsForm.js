@@ -18,7 +18,7 @@ function validateRow(row) {
   if (!row.celestialDeclination.trim()) {
     errors.celestialDeclination = 'Пустое поле';
   }
-  
+
   if (!row.date) {
     errors.date = 'Пустое поле';
   } else {
@@ -155,7 +155,7 @@ function ObservationsForm({ handleOrbitData }) {
                 <div className="col-12 mb-3">
                     <button className="btn btn-outline-primary w-100" onClick={addRow}>+</button>
                 </div>
-                
+
                 <button className="btn btn-primary" onClick={() => {performCalculations()}}>
                     Рассчитать орбиту
                 </button>

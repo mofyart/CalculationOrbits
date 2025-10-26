@@ -6,18 +6,18 @@ function ObservationInput({ index, onChange, onDelete, errors, values, canDelete
     <div className="row mb-1">
         <div className="col-3">
             <input
-                className={`form-control w-100 ${errors?.directАscension ? 'is-invalid': ''}`}
+                className={`form-control w-100 ${errors?.directAscension ? 'is-invalid': ''}`}
                 type="text"
-                name="directАscension"
-                value={values.directАscension}
+                name="directAscension"
+                value={values.directAscension}
                 onChange={(e) => onChange(index, e)}
             />
-            {errors?.directАscension && <div className="invalid-feedback d-block">{errors.directАscension}</div>}
+            {errors?.directAscension && <div className="invalid-feedback d-block">{errors.directAscension}</div>}
         </div>
 
         <div className="col-3">
             <input
-                className={`form-control w-100 ${errors?.directАscension ? 'is-invalid': ''}`}
+                className={`form-control w-100 ${errors?.directAscension ? 'is-invalid': ''}`}
                 type="text"
                 name="celestialDeclination"
                 value={values.celestialDeclination}
@@ -28,7 +28,7 @@ function ObservationInput({ index, onChange, onDelete, errors, values, canDelete
 
         <div className="col-5">
             <input
-                className={`form-control w-100 ${errors?.directАscension ? 'is-invalid': ''}`}
+                className={`form-control w-100 ${errors?.directAscension ? 'is-invalid': ''}`}
                 type="datetime-local"
                 name="date"
                 value={values.date}

@@ -57,6 +57,8 @@ func (service *calculationCometService) CreateCometCalculation(requestCometInfo 
 		return CometAllCharestic{}, err
 	}
 
+	fmt.Println(cometInfo)
+
 	var orbCharacter OrbitalCharestic
 
 	bodyBytes, _ := io.ReadAll(requestToCalculate.Body)
@@ -67,9 +69,11 @@ func (service *calculationCometService) CreateCometCalculation(requestCometInfo 
 		return CometAllCharestic{}, err
 	}
 
-	fmt.Println("Response from Decoder service:", orbCharacter)
+	orbCharacter.ID = cometInfo.ID
 
 	cometInfo.Charestic = orbCharacter
+
+	fmt.Println("Response from Decoder service:", cometInfo)
 
 	if err := service.repository.CreateCometCalculation(cometInfo); err != nil {
 		return CometAllCharestic{}, err
