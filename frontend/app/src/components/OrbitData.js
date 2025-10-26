@@ -34,7 +34,7 @@ function Orbit({ data }) {
 
                 <div className="col-6">
                     <tt className="d-block">
-                        Минимальное расстояние = {data.minDistance}
+                        Минимальное расстояние = {data.minDistance - 1}
                     </tt>
 
                     <tt className="d-block">

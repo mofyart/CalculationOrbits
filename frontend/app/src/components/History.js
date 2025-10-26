@@ -5,15 +5,47 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import astroService from '../api/apiClient';
 
-function HistoryCard({data, onSelect}) {
+function HistoryCard({data, onSelect, fetchHistory}) {
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await astroService.deleteData(data.id);
+      await fetchHistory();
+    } catch (error) {
+      console.error('Ошибка при удалении:', error);
+      alert('Не удалось удалить объект');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div>
-      <button className="btn btn-outline-primary" onClick={() => onSelect(data)}>
+      <button 
+        className="btn btn-outline-primary" 
+        onClick={() => onSelect(data)}
+        disabled={isDeleting}
+      >
         {data.nameComet}
+      </button>
+
+      <button 
+        className="btn btn-danger rounded-3" 
+        onClick={handleDelete}
+        disabled={isDeleting}
+      >
+        {isDeleting ? (
+          <i className="bi bi-arrow-clockwise spinner-border spinner-border-sm"></i>
+        ) : (
+          <i className="bi bi-trash"></i>
+        )}
       </button>
     </div>
   );
 }
+
 
 function History({onSelect}) {
   const [history, setHistory] = useState(null);
@@ -58,7 +90,7 @@ function History({onSelect}) {
 
       {history && Array.isArray(history) && history.length > 0 && history.map((data) => (
           <div key={data.id} className="mb-2">
-            <HistoryCard data={data} onSelect={onSelect} />
+            <HistoryCard data={data} onSelect={onSelect} fetchHistory={fetchHistory} />
           </div>
         ))
       }

@@ -34,7 +34,7 @@ function validateRow(row) {
 
 function ObservationsForm({ handleOrbitData, initialData }) {
     const rowId = useRef(0);
-    const minRowsCount = 1;
+    const minRowsCount = 5;
 
     const createRow = () => ({
         id: rowId.current++,
