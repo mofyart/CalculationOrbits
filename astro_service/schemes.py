@@ -47,6 +47,8 @@ class ObservationsList(BaseModel):
 
 
 class OrbitData(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
     largeSemiAxis: float = Field(alias="largeSemiAxis")
     eccentricity: float = Field(alias="eccentricity")
     inclination: float = Field(alias="inclination")
