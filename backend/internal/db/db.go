@@ -49,7 +49,13 @@ func InitDB() (*gorm.DB, error) {
 
 	log.Println("Successfully connected to database!")
 
-	if err := database.AutoMigrate(&calculationCometService.CometAllCharestic{}); err != nil {
+	log.Println("Successfully connected to database!")
+
+	if err := database.AutoMigrate(
+		&calculationCometService.CometAllCharestic{},
+		&calculationCometService.OrbitalCharestic{},
+		&calculationCometService.Observation{},
+	); err != nil {
 		return nil, fmt.Errorf("could not migrate: %w", err)
 	}
 
