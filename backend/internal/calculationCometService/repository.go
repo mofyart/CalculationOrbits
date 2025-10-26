@@ -48,5 +48,10 @@ func (repository *cometRepository) GetCometCalculation(id string) (CometAllChare
 }
 
 func (repository *cometRepository) DeleteCometObservation(id string) error {
-	return repository.database.Delete(&CometAllCharestic{}, "id = ?", id).Error
+	var comet CometAllCharestic
+	err := repository.database.Preload("Observations").Preload("Charestic").First(&comet, "id = ?", id).Error
+	if err != nil {
+		return err
+	}
+	return repository.database.Delete(&comet).Error
 }
