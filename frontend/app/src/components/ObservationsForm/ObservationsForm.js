@@ -32,7 +32,7 @@ function validateRow(row) {
   return errors;
 }
 
-function ObservationsForm({ handleOrbitData }) {
+function ObservationsForm({ handleOrbitData, initialData }) {
     const rowId = useRef(0);
     const minRowsCount = 1;
 

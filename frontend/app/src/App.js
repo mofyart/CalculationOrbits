@@ -7,26 +7,11 @@ import ObservationsForm from './components/ObservationsForm/ObservationsForm';
 import Orbit from './components/OrbitData';
 import History from './components/History';
 
-function Main() {
-  const [orbitData, setOrbitData] = useState(null);
-
-  return (
-    <div>
-      <ObservationsForm
-        handleOrbitData={setOrbitData}
-      />
-
-      {orbitData && (
-        <div className="mt-5">
-          <Orbit data={orbitData} />
-        </div>
-      )}
-    </div>
-  );
-}
-
 function App() {
   const title = "Don't look up";
+
+  const [initialData, setInitialData] = useState(null);
+  const [orbitData, setOrbitData] = useState(null);
 
   return (
     <div>
@@ -36,11 +21,22 @@ function App() {
       <main className="container">
         <div className="row">
           <div className="col-2">
-            <History />
+            <History onSelect={setInitialData} />
           </div>
 
           <div className="col-10">
-            <Main />
+            <div>
+              <ObservationsForm
+                handleOrbitData={setOrbitData}
+                initialData={initialData}
+              />
+
+              {orbitData && (
+                <div className="mt-5">
+                  <Orbit data={orbitData} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </main>
