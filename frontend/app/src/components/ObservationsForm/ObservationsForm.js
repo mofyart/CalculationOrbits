@@ -59,9 +59,11 @@ function ObservationsForm({ handleOrbitData, initialData }) {
         setErrorsList(updatedErrors);
     };
 
-    const [nameComet, setName] = useState('');
+    const [nameComet, setName] = useState('Без названия');
     const [rows, setRows] = useState(Array.from({length: minRowsCount}, createRow));
+
     const [errorsList, setErrorsList] = useState(Array(minRowsCount).fill({}));
+    const [nameEmptyError, setNameEmptyError] = useState(null);
 
     const handleChange = (index, e) => {
         const { name, value } = e.target;

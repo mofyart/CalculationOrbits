@@ -57,7 +57,7 @@ function History({onSelect}) {
       </button>
 
       {history && Array.isArray(history) && history.length > 0 && history.map((data) => (
-          <div key={data.id}>
+          <div key={data.id} className="mb-2">
             <HistoryCard data={data} onSelect={onSelect} />
           </div>
         ))
