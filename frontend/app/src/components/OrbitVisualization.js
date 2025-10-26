@@ -3,7 +3,6 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Line, Text } from '@react-three/drei';
 import * as THREE from 'three';
 
-const AU = 149597870.7;
 const SCALE = 100;
 
 function getOrbitalPosition(a, e, i, omega, Omega, nu) {
@@ -53,6 +52,25 @@ function Orbit({ a, e, i, omega, Omega, color, label }) {
   );
 }
 
+function CelestialBody({ a, e, i, omega, Omega, nu, color, size = 5, label }) {
+  const pos = getOrbitalPosition(a, e, i, omega, Omega, nu);
+  const position = [pos[0] * SCALE, pos[2] * SCALE, -pos[1] * SCALE];
+
+  return (
+    <>
+      <mesh position={position}>
+        <sphereGeometry args={[size, 32, 32]} />
+        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.5} />
+      </mesh>
+      {label && (
+        <Text position={[position[0], position[1] + size * 2, position[2]]} fontSize={6} color={color}>
+          {label}
+        </Text>
+      )}
+    </>
+  );
+}
+
 function Sun() {
   return (
     <mesh position={[0, 0, 0]}>
@@ -73,7 +91,7 @@ export default function OrbitVisualization({ cometParams }) {
   };
 
   return (
-    <div style={{ width: '100%', height: '100vh', background: '#000' }}>
+    <div style={{ width: '100%', height: '70vh', background: '#000' }}>
       <Canvas camera={{ position: [300, 200, 300], fov: 60 }}>
         <ambientLight intensity={0.3} />
         <pointLight position={[0, 0, 0]} intensity={2} />
@@ -87,7 +105,6 @@ export default function OrbitVisualization({ cometParams }) {
           omega={earthOrbitParams.omega}
           Omega={earthOrbitParams.Omega}
           color="#2196F3"
-          label="Earth Orbit"
         />
 
         <Orbit
@@ -97,7 +114,30 @@ export default function OrbitVisualization({ cometParams }) {
           omega={cometParams.omega}
           Omega={cometParams.Omega}
           color="#FF5722"
-          label="Comet Orbit"
+        />
+
+        <CelestialBody
+          a={earthOrbitParams.a}
+          e={earthOrbitParams.e}
+          i={earthOrbitParams.i}
+          omega={earthOrbitParams.omega}
+          Omega={earthOrbitParams.Omega}
+          nu={0}
+          color="#2196F3"
+          size={4}
+          label="Earth"
+        />
+
+        <CelestialBody
+          a={cometParams.a}
+          e={cometParams.e}
+          i={cometParams.i}
+          omega={cometParams.omega}
+          Omega={cometParams.Omega}
+          nu={cometParams.nu}
+          color="#FF5722"
+          size={5}
+          label="Comet"
         />
 
         <OrbitControls />

@@ -1,0 +1,167 @@
+import { useState, useRef } from 'react';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
+import ImageUploader from './ImageUploader';
+import ObservationInput from './ObservationInput';
+
+import astroService from '../../api/apiClient';
+
+function validateRow(row) {
+  const errors = {};
+
+  if (!row.directАscension.trim()) {
+    errors.directАscension = 'Пустое поле';
+  }
+
+  if (!row.celestialDeclination.trim()) {
+    errors.celestialDeclination = 'Пустое поле';
+  }
+  
+  if (!row.date) {
+    errors.date = 'Пустое поле';
+  } else {
+    const d = new Date(row.date);
+
+    if (isNaN(d.getTime())) {
+      errors.date = 'Некорректный формат';
+    }
+  }
+
+  return errors;
+}
+
+function ObservationsForm({ handleOrbitData }) {
+    const rowId = useRef(0);
+    const minRowsCount = 1;
+
+    const createRow = () => ({
+        id: rowId.current++,
+        directАscension: '',
+        celestialDeclination: '',
+        date: '',
+    });
+
+    const addRow = () => {
+        setRows([...rows, createRow()]);
+        setErrorsList([...errorsList, {}]);
+    };
+
+    const removeRow = (index) => {
+        if (rows.length <= minRowsCount) {
+            return;
+        }
+
+        const updatedRows = rows.filter((_, i) => i !== index);
+        setRows(updatedRows);
+        const updatedErrors = errorsList.filter((_, i) => i !== index);
+        setErrorsList(updatedErrors);
+    };
+
+    const [rows, setRows] = useState(Array.from({length: minRowsCount}, createRow));
+    const [errorsList, setErrorsList] = useState(Array(minRowsCount).fill({}));
+
+    const handleChange = (index, e) => {
+        const { name, value } = e.target;
+        const updatedRows = rows.map((row, i) => {
+            if (i === index) {
+                return { ...row, [name]: value };
+            }
+            return row;
+        });
+        setRows(updatedRows);
+
+        const updatedErrors = [...errorsList];
+        if (updatedErrors[index] && updatedErrors[index][name]) {
+            delete updatedErrors[index][name];
+            setErrorsList(updatedErrors);
+        }
+    };
+
+    const getJson = () => {
+        return JSON.stringify({
+            "observations": rows.map(({id, ...rest}) => rest)
+        });
+    }
+
+    const performCalculations = async () => {
+        const newErrorsList = rows.map(validateRow);
+        setErrorsList(newErrorsList);
+        const isFormValid = newErrorsList.every(errors => Object.keys(errors).length === 0);
+
+        if (!isFormValid) {
+            return;
+        }
+
+        const data = getJson();
+
+        const response = await astroService.getOrbitData(data);
+        const orbitData = await response.json();
+
+        // const response = await fetch('api/get_orbit', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: data,
+        // });
+
+        // const response = {
+        //     "a": 1.505173,
+        //     "e": 0.086673,
+        //     "i": 1.8473,
+        //     "Omega": 49.4706,
+        //     "omega": 286.0646,
+        //     "nu": 23.4665,
+        //     "epoch": "2000-01-01 00:00:00.000",
+        // };
+
+        // const calculatedData = await response.json();
+        // console.log(calculatedData);
+        // handleOrbitData(calculatedData);
+        handleOrbitData(response);
+    }
+
+    return (
+        <>
+            <ImageUploader />
+
+            <div className="row mb-3">
+                <div className="col-3">
+                    <span className="fw-bold">Восхождение</span>
+                </div>
+                <div className="col-3">
+                    <span className="fw-bold">Сколонение</span>
+                </div>
+                <div className="col-6">
+                    <span className="fw-bold">Дата и время</span>
+                </div>
+            </div>
+            <div>
+                {rows.map((row, index) => (
+                    <div key={row.id} className="mb-3">
+                        <ObservationInput
+                            index={index}
+                            onChange={handleChange}
+                            onDelete={removeRow}
+                            errors={errorsList[index]}
+                            values={row}
+                            canDelete={rows.length > minRowsCount}
+                        />
+                    </div>
+                ))}
+
+                <div className="col-12 mb-3">
+                    <button className="btn btn-outline-primary w-100" onClick={addRow}>+</button>
+                </div>
+                
+                <button className="btn btn-primary" onClick={() => {performCalculations()}}>
+                    Рассчитать орбиту
+                </button>
+            </div>
+        </>
+    );
+}
+
+export default ObservationsForm;
