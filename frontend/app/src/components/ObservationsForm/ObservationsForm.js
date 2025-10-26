@@ -141,7 +141,7 @@ function ObservationsForm({ handleOrbitData, initialData, onDataSubmit }) {
     return (
         <>
             <div className="mb-5">
-                <div className="col-3">
+                <div className="col-3 mb-3">
                     <span className="fw-bold">Название</span>
                 </div>
                 <input

@@ -114,7 +114,7 @@ button, .btn, .ask-btn {
     color: #fff;
     border-radius: 9px;
     border: none;
-    padding: 10px 22px;
+    /* padding: 10px 22px; */
     font-size: 1.03em;
     font-weight: 600;
     letter-spacing: 1px;
