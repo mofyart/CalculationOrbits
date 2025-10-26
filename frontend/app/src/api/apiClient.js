@@ -10,7 +10,13 @@ export const astroService = {
             },
             body: data
         },
-),
+    ),
+    getHistory: async () => await fetch(
+        API_ENDPOINTS.getHisotry,
+        {
+            'method': 'GET',
+        },
+    ),
 };
 
 export default astroService;
