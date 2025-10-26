@@ -1,5 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+<<<<<<< HEAD
+=======
+
+>>>>>>> 175982b (add delete)
 
 import { useState } from 'react';
 
@@ -18,7 +22,7 @@ function App() {
     <div>
       <title>{title}</title>
       <Header title={title} />
-      
+
       <main className="container">
         <div className="row">
           <div className="col-2">
