@@ -141,7 +141,9 @@ function ObservationsForm({ handleOrbitData, initialData, onDataSubmit }) {
     return (
         <>
             <div className="mb-5">
-                <span className="d-block">Навзание</span>
+                <div className="col-3">
+                    <span className="fw-bold">Название</span>
+                </div>
                 <input
                     className={`d-block form-control w-100 ${nameEmptyError ? 'is-invalid': ''}`}
                     type="text"

@@ -23,25 +23,31 @@ function HistoryCard({data, onSelect, fetchHistory}) {
 
   return (
     <div>
-      <button 
-        className="btn btn-outline-primary" 
-        onClick={() => onSelect(data)}
-        disabled={isDeleting}
-      >
-        {data.nameComet}
-      </button>
+      <div className="row">
+        <div className="col-8">
+          <button 
+            className="btn btn-outline-primary" 
+            onClick={() => onSelect(data)}
+            disabled={isDeleting}
+          >
+            {data.nameComet.substring(0, 7)}
+          </button>
+        </div>
 
-      <button 
-        className="btn btn-danger rounded-3" 
-        onClick={handleDelete}
-        disabled={isDeleting}
-      >
-        {isDeleting ? (
-          <i className="bi bi-arrow-clockwise spinner-border spinner-border-sm"></i>
-        ) : (
-          <i className="bi bi-trash"></i>
-        )}
-      </button>
+        <div className="col-4 text-end">
+           <button 
+              className="btn btn-danger rounded-3" 
+              onClick={handleDelete}
+              disabled={isDeleting}
+            >
+              {isDeleting ? (
+                <i className="bi bi-arrow-clockwise spinner-border spinner-border-sm"></i>
+              ) : (
+                <i className="bi bi-trash"></i>
+              )}
+            </button>
+        </div>
+      </div>
     </div>
   );
 }
