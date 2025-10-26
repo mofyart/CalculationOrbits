@@ -16,6 +16,8 @@ type OrbitalCharestic struct {
 	LongitudeAscendingNode float64 `json:"longitude"`
 	Pericenter             float64 `json:"pericenter"`
 	TrueAnomaly            float64 `json:"trueAnomaly"`
+	MinDistance            float64 `json:"minDistance"`
+	MinApproximationDate   string  `json:"minApproximationDate"`
 }
 
 type Observation struct {
