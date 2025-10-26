@@ -57,17 +57,15 @@ func (service *calculationCometService) CreateCometCalculation(requestCometInfo 
 		return CometAllCharestic{}, err
 	}
 
-	fmt.Println(cometInfo)
-
 	var orbCharacter OrbitalCharestic
 
 	bodyBytes, _ := io.ReadAll(requestToCalculate.Body)
 
-	fmt.Println("Response from Python service:", string(bodyBytes))
-
 	if err := json.NewDecoder(bytes.NewReader(bodyBytes)).Decode(&orbCharacter); err != nil {
 		return CometAllCharestic{}, err
 	}
+
+	fmt.Println("Response from Decoder service:", orbCharacter)
 
 	orbCharacter.ID = cometInfo.ID
 
