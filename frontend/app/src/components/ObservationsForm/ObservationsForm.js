@@ -94,6 +94,11 @@ function ObservationsForm({ handleOrbitData, initialData }) {
         setErrorsList(newErrorsList);
         const isFormValid = newErrorsList.every(errors => Object.keys(errors).length === 0);
 
+        if (!nameEmptyError) {
+            setNameEmptyError("Пустое поле");
+            return;
+        }
+
         if (!isFormValid) {
             return;
         }
@@ -125,6 +130,7 @@ function ObservationsForm({ handleOrbitData, initialData }) {
             }));
             setRows(initialRows);
             setErrorsList(Array(initialRows.length).fill({}));
+            handleOrbitData(initialData.orbitalCharestic);
         }
     }, [initialData]); // Эффект сработает при изменении initialData
 
@@ -133,9 +139,10 @@ function ObservationsForm({ handleOrbitData, initialData }) {
             <div className="mb-5">
                 <span className="d-block">Навзание</span>
                 <input
-                    className="d-block form-control w-100"
+                    className={`d-block form-control w-100 ${nameEmptyError ? 'is-invalid': ''}`}
                     type="text"
-                    name="nameComet" onChange={(e) => setName(e.target.value)} value={nameComet} />
+                    name="nameComet" onChange={(e) => {setName(e.target.value); setNameEmptyError('')}} value={nameComet} />
+                {nameEmptyError && <div className="invalid-feedback d-block">{nameEmptyError}</div>}
             </div>
 
             <ImageUploader />

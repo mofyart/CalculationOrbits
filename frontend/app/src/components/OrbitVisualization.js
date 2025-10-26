@@ -175,7 +175,7 @@ function OrbitVisualization({ cometParams }) {
 
   return (
     // Используем 100vh для заполнения всего экрана
-    <div style={{ width: '100%', height: '70vh', background: '#000' }}>
+    <div style={{ width: '100%', height: '70vh', background: '#000' }} className="rounded-5">
       {/* ДОБАВЛЕНО 'far: 50000' - Увеличивает дальность прорисовки 
         (решает проблему "далеко rander")
       */}
