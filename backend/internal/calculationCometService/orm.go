@@ -7,7 +7,6 @@ type CometAllCharestic struct {
 	Observations []Observation    `gorm:"foreignKey:CometID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"observations"`
 }
 
-// Для связи one-to-one OrbitalCharestic имеет поле ID
 type OrbitalCharestic struct {
 	ID                     string  `json:"id"`
 	LargeSemiAxis          float64 `json:"largeSemiAxis"`

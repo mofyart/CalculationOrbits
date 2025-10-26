@@ -28,7 +28,6 @@ func main() {
 
 	astroEcho.GET("/api/cometCalculation", astroHandlers.GetCometObseravtion)
 	astroEcho.POST("/api/cometCalculation", astroHandlers.PostCometObservation)
-	// astroEcho.PATCH("/cometCalculation/:id", patchCalculations)
 	astroEcho.DELETE("/api/cometCalculation/:id", astroHandlers.DeleteCometObservation)
 
 	astroEcho.Start(":9090")
