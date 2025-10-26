@@ -9,6 +9,8 @@ from poliastro.twobody import Orbit
 from poliastro.bodies import Sun
 from scipy.optimize import least_squares
 
+from datetime import datetime
+
 from schemes import ObservationsList
 
 
@@ -237,6 +239,19 @@ def CalculateOrbitFromObservations(observationsList: ObservationsList) -> Dict:
     
     orbit_icrs = DetermineOrbit(observations)
     orbit_ecliptic = ConvertOrbitToEcliptic(orbit_icrs)
+
+    if searchStartTime is None:
+        searchStartTime = Time(datetime.utcnow(), scale='utc')
+    
+    if searchEndTime is None:
+        endDate = datetime.utcnow() + timedelta(days=300*365.25)
+        searchEndTime = Time(endDate, scale='utc')
+    
+    closestApproach = FindClosestApproach(
+        orbit=orbit,
+        searchStartTime=searchStartTime,
+        searchEndTime=searchEndTime
+    )
     
     result = {
         'largeSemiAxis': orbit_ecliptic.a.to(u.AU).value,
