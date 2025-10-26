@@ -44,6 +44,7 @@ func (repository *cometRepository) GetCometCalculation(id string) (CometAllChare
 		First(&comet, "id = ?", id).Error
 
 	return comet, err
+
 }
 
 func (repository *cometRepository) DeleteCometObservation(id string) error {
