@@ -9,13 +9,13 @@ type CometAllCharestic struct {
 
 // Для связи one-to-one OrbitalCharestic имеет поле ID
 type OrbitalCharestic struct {
-	ID                     string `json:"id"`
-	LargeSemiAxis          string `json:"largeSemiAxis"`
-	Eccentricity           string `json:"eccentricity"`
-	Inclination            string `json:"inclination"`
-	LongitudeAscendingNode string `json:"longitude"`
-	Pericenter             string `json:"pericenter"`
-	TrueAnomaly            string `json:"trueAnomaly"`
+	ID                     string  `json:"id"`
+	LargeSemiAxis          float64 `json:"largeSemiAxis"`
+	Eccentricity           float64 `json:"eccentricity"`
+	Inclination            float64 `json:"inclination"`
+	LongitudeAscendingNode float64 `json:"longitude"`
+	Pericenter             float64 `json:"pericenter"`
+	TrueAnomaly            float64 `json:"trueAnomaly"`
 }
 
 type Observation struct {
