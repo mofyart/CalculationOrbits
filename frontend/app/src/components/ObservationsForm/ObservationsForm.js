@@ -32,7 +32,7 @@ function validateRow(row) {
   return errors;
 }
 
-function ObservationsForm({ handleOrbitData, initialData }) {
+function ObservationsForm({ handleOrbitData, initialData, onDataSubmit }) {
     const rowId = useRef(0);
     const minRowsCount = 5;
 
@@ -117,6 +117,10 @@ function ObservationsForm({ handleOrbitData, initialData }) {
         //     "nu": 23.4665,
         //     "epoch": "2000-01-01 00:00:00.000",
         // };
+
+        if (onDataSubmit) {
+            onDataSubmit();
+        }
 
         handleOrbitData(orbitData);
     }

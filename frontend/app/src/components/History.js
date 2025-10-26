@@ -47,7 +47,7 @@ function HistoryCard({data, onSelect, fetchHistory}) {
 }
 
 
-function History({onSelect}) {
+function History({onSelect, refreshTrigger}) {
   const [history, setHistory] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -69,6 +69,10 @@ function History({onSelect}) {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchHistory();
+  }, [refreshTrigger]);
 
   useEffect(() => {
     fetchHistory();

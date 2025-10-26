@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import Header from './components/Header';
 import ObservationsForm from './components/ObservationsForm/ObservationsForm';
@@ -14,6 +14,11 @@ function App() {
 
   const [initialData, setInitialData] = useState(null);
   const [orbitData, setOrbitData] = useState(null);
+  const [refreshHistory, setRefreshHistory] = useState(0);
+
+  const handleHistoryUpdate = useCallback(() => {
+    setRefreshHistory(prev => prev + 1);
+  }, []);
 
   return (
     <div>
@@ -23,7 +28,7 @@ function App() {
       <main className="container">
         <div className="row">
           <div className="col-2">
-            <History onSelect={setInitialData} />
+            <History onSelect={setInitialData} refreshTrigger={refreshHistory} />
           </div>
 
           <div className="col-10">
@@ -31,6 +36,7 @@ function App() {
               <ObservationsForm
                 handleOrbitData={setOrbitData}
                 initialData={initialData}
+                onDataSubmit={handleHistoryUpdate}
               />
 
               {orbitData && (
