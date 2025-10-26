@@ -29,7 +29,7 @@ function History({onSelect}) {
       if (!response.ok) {
         throw new Error('Произошла ошибка при загрузке данных. Статус: ' + response.status);
       }
-      setHistory(await response.json());
+      setHistory((await response.json()).reverse());
     } catch (e) {
       console.error("Ошибка при загрузке истории:", e);
       setError(e);

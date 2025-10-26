@@ -94,7 +94,7 @@ function ObservationsForm({ handleOrbitData, initialData }) {
         setErrorsList(newErrorsList);
         const isFormValid = newErrorsList.every(errors => Object.keys(errors).length === 0);
 
-        if (!nameEmptyError) {
+        if (!nameComet.trim()) {
             setNameEmptyError("Пустое поле");
             return;
         }
@@ -141,7 +141,7 @@ function ObservationsForm({ handleOrbitData, initialData }) {
                 <input
                     className={`d-block form-control w-100 ${nameEmptyError ? 'is-invalid': ''}`}
                     type="text"
-                    name="nameComet" onChange={(e) => {setName(e.target.value); setNameEmptyError('')}} value={nameComet} />
+                    name="nameComet" onChange={(e) => {setName(e.target.value); setNameEmptyError(null)}} value={nameComet} />
                 {nameEmptyError && <div className="invalid-feedback d-block">{nameEmptyError}</div>}
             </div>
 
