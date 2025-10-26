@@ -8,7 +8,7 @@ import astroService from '../api/apiClient';
 function HistoryCard({data, onSelect }) {
   return (
     <div>
-      <button onClick={() => onSelect(data)}>
+      <button className="btn btn-outline-primary" onClick={() => onSelect(data)}>
         {data.nameComet}
       </button>
     </div>

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -59,6 +59,7 @@ function ObservationsForm({ handleOrbitData, initialData }) {
         setErrorsList(updatedErrors);
     };
 
+    const [nameComet, setName] = useState('');
     const [rows, setRows] = useState(Array.from({length: minRowsCount}, createRow));
     const [errorsList, setErrorsList] = useState(Array(minRowsCount).fill({}));
 
@@ -81,6 +82,7 @@ function ObservationsForm({ handleOrbitData, initialData }) {
 
     const getJson = () => {
         return JSON.stringify({
+            "nameComet": nameComet,
             "observations": rows.map(({id, ...rest}) => rest)
         });
     }
@@ -112,8 +114,28 @@ function ObservationsForm({ handleOrbitData, initialData }) {
         handleOrbitData(orbitData);
     }
 
+    useEffect(() => {
+        if (initialData) {
+            setName(initialData.nameComet);
+            const initialRows = initialData.observations.map(obs => ({
+                id: rowId.current++,
+                ...obs
+            }));
+            setRows(initialRows);
+            setErrorsList(Array(initialRows.length).fill({}));
+        }
+    }, [initialData]); // Эффект сработает при изменении initialData
+
     return (
         <>
+            <div className="mb-5">
+                <span className="d-block">Навзание</span>
+                <input
+                    className="d-block form-control w-100"
+                    type="text"
+                    name="nameComet" onChange={(e) => setName(e.target.value)} value={nameComet} />
+            </div>
+
             <ImageUploader />
 
             <div className="row mb-3">
