@@ -13,11 +13,15 @@ from poliastro.bodies import Sun
 
 from scipy.optimize import least_squares
 
+from schemes import ObservationsList
+
+
 @dataclass
 class AstraObservation:
     date: Time
     directAscension: float
     celestialDeclination: float
+
 
 def GetEarthPosition(observationTime: Time) -> np.ndarray:
     earthBody = get_body('earth', observationTime)
@@ -143,13 +147,13 @@ def DetermineOrbit(observations: List[AstraObservation]) -> Orbit:
 
     return orbit
 
-def CalculateOrbitFromObservations(observationData: List[Dict]) -> Dict:
+def CalculateOrbitFromObservations(observationsList: ObservationsList) -> Dict:
     observations = [
         AstraObservation(
             date=Time(obs.date, scale='utc'),
             directAscension=obs.directAscension,
             celestialDeclination=obs.celestialDeclination,
-        ) for obs in observationData
+        ) for obs in observationsList
     ]
 
     orbit_icrs = DetermineOrbit(observations)
