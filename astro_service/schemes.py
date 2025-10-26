@@ -4,7 +4,13 @@ from datetime import datetime
 
 from astropy.time import Time
 
-from pydantic import BaseModel, BeforeValidator, ConfigDict, PlainSerializer
+from pydantic import (
+    BaseModel,
+    BeforeValidator,
+    ConfigDict,
+    PlainSerializer,
+    Field,
+)
 
 
 def validate_astropy_time(val: str):
@@ -38,6 +44,33 @@ class Observation(BaseModel):
 
 class ObservationsList(BaseModel):
     observations: List[Observation]
+
+
+# LargeSemiAxis          string `json:"largeSemiAxis"`
+# Eccentricity           string `json:"eccentricity"`
+# Inclination            string `json:"inclination"`
+# LongitudeAscendingNode string `json:"longitude"`
+# Pericenter             string `json:"pericenter"`
+# TrueAnomaly            string `json:"trueAnomaly"`
+# Date                   string `json:"date"`
+
+# result = {
+#     'a': orbit_ecliptic.a.to(u.AU).value,
+#     'e': orbit_ecliptic.ecc.value,
+#     'i': orbit_ecliptic.inc.to(u.deg).value,
+#     'Omega': orbit_ecliptic.raan.to(u.deg).value,
+#     'omega': orbit_ecliptic.argp.to(u.deg).value,
+#     'nu': orbit_ecliptic.nu.to(u.deg).value,
+#     'epoch': orbit_ecliptic.epoch.iso
+# }
+
+class OrbitData(BaseModel):
+    largeSemiAxis: float = Field(alias="largeSemiAxis")
+    eccentricity: float = Field(alias="eccentricity")
+    inclination: float = Field(alias="inclination")
+    longitude: float = Field(alias="longitude")
+    pericenter: float = Field(alias="pericenter")
+    trueAnomaly: float = Field(alias="trueAnomaly")
 
 
 if __name__ == "__main__":

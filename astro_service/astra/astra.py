@@ -150,22 +150,22 @@ def DetermineOrbit(observations: List[AstraObservation]) -> Orbit:
 def CalculateOrbitFromObservations(observationsList: ObservationsList) -> Dict:
     observations = [
         AstraObservation(
-            date=Time(obs.date, scale='utc'),
-            directAscension=obs.directAscension,
-            celestialDeclination=obs.celestialDeclination,
-        ) for obs in observationsList
+            date=observation.date,
+            directAscension=observation.directAscension,
+            celestialDeclination=observation.celestialDeclination,
+        ) for observation in observationsList.observations
     ]
 
     orbit_icrs = DetermineOrbit(observations)
     orbit_ecliptic = ConvertOrbitToEcliptic(orbit_icrs)
 
     result = {
-        'a': orbit_ecliptic.a.to(u.AU).value,
-        'e': orbit_ecliptic.ecc.value,
-        'i': orbit_ecliptic.inc.to(u.deg).value,
-        'Omega': orbit_ecliptic.raan.to(u.deg).value,
-        'omega': orbit_ecliptic.argp.to(u.deg).value,
-        'nu': orbit_ecliptic.nu.to(u.deg).value,
+        'largeSemiAxis': orbit_ecliptic.a.to(u.AU).value,
+        'eccentricity': orbit_ecliptic.ecc.value,
+        'inclination': orbit_ecliptic.inc.to(u.deg).value,
+        'longitude': orbit_ecliptic.raan.to(u.deg).value,
+        'pericenter': orbit_ecliptic.argp.to(u.deg).value,
+        'trueAnomaly': orbit_ecliptic.nu.to(u.deg).value,
         'epoch': orbit_ecliptic.epoch.iso
     }
 
