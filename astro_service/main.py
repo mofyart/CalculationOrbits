@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from schemes import ObservationsList, OrbitData
 
-from astra.astra import CalculateOrbitFromObservations
+from astra import CalculateOrbitFromObservations
 
 
 app = FastAPI()
