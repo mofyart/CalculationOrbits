@@ -1,60 +1,42 @@
-import { useState } from 'react';
-import './App.css';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Header from './components/Header';
-import ObservationsForm from './components/ObservationsForm';
-import Orbit from './components/OrbitData';
+import { useState } from 'react';
 
-function RightBar() {
-  return (
-    <>
-      <p>SideBrar Here</p>
-    </>
-  );
-}
+import Header from './components/Header';
+import ObservationsForm from './components/ObservationsForm/ObservationsForm';
+import Orbit from './components/OrbitData';
+import History from './components/History';
 
 function Main() {
-
   const [orbitData, setOrbitData] = useState(null);
 
-  const handleOrbitDataResponse = (orbitData) => {
-    setOrbitData(orbitData);
-  }
-
   return (
-    <>
-      <p>
-        Astro Boy!
-      </p>
-
+    <div>
       <ObservationsForm
-        handleOrbitData={handleOrbitDataResponse}
+        handleOrbitData={setOrbitData}
       />
 
-      <div className="mt-5">
-        {orbitData && (
+      {orbitData && (
+        <div className="mt-5">
           <Orbit data={orbitData} />
-        )}
-      </div>
-    </>
+        </div>
+      )}
+    </div>
   );
 }
 
 function App() {
-  const title = "Astro";
+  const title = "astro";
 
   return (
-    <>
+    <div>
       <title>{title}</title>
-
       <Header title={title} />
-
+      
       <main className="container">
         <div className="row">
           <div className="col-2">
-            <RightBar />
+            <History />
           </div>
 
           <div className="col-10">
@@ -62,7 +44,7 @@ function App() {
           </div>
         </div>
       </main>
-    </>
+    </div>
   );
 }
 
