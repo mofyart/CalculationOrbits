@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 from astropy import units as u
 from astropy.time import Time
+from astropy.coordinates import get_body
 
 from datetime import datetime, timedelta
 
@@ -11,12 +12,14 @@ from poliastro.twobody import Orbit
 
 from scipy.optimize import minimize_scalar
 
-from astra import GetEarthPosition
-
 @dataclass
 class CometApproachEvent:
     dateOfClosestApproach: Time
     minimumDistance: float
+
+def GetEarthPosition(observationTime: Time) -> np.ndarray:
+    earthBody = get_body('earth', observationTime)
+    return earthBody.cartesian.xyz.to(u.au).value
 
 def CalculateGeocentricDistance(cometHeliocentric: np.ndarray,
                                  earthHeliocentric: np.ndarray) -> float:

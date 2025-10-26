@@ -9,10 +9,9 @@ from poliastro.twobody import Orbit
 from poliastro.bodies import Sun
 from scipy.optimize import least_squares
 
-from datetime import datetime
+from СometApproach import CalculateCometApproachData
 
 from schemes import ObservationsList
-
 
 @dataclass
 class AstraObservation:
@@ -240,18 +239,9 @@ def CalculateOrbitFromObservations(observationsList: ObservationsList) -> Dict:
     orbit_icrs = DetermineOrbit(observations)
     orbit_ecliptic = ConvertOrbitToEcliptic(orbit_icrs)
 
-    if searchStartTime is None:
-        searchStartTime = Time(datetime.utcnow(), scale='utc')
-    
-    if searchEndTime is None:
-        endDate = datetime.utcnow() + timedelta(days=300*365.25)
-        searchEndTime = Time(endDate, scale='utc')
-    
-    closestApproach = FindClosestApproach(
-        orbit=orbit,
-        searchStartTime=searchStartTime,
-        searchEndTime=searchEndTime
-    )
+    approach_data = CalculateCometApproachData(orbit=orbit_ecliptic)
+    min_distance = approach_data.get('minimumDistanceAU', 0.0)
+    min_approx_date = approach_data.get('dateOfClosestApproach', '1111-11-11T11:11:11')
     
     result = {
         'largeSemiAxis': orbit_ecliptic.a.to(u.AU).value,
@@ -260,35 +250,9 @@ def CalculateOrbitFromObservations(observationsList: ObservationsList) -> Dict:
         'longitude': orbit_ecliptic.raan.to(u.deg).value,
         'pericenter': orbit_ecliptic.argp.to(u.deg).value,
         'trueAnomaly': orbit_ecliptic.nu.to(u.deg).value,
-        'minDistance': 0.0,
-        'minApproximationDate': '1111-11-11T11:11:11',
+        'minDistance': min_distance,
+        'minApproximationDate': min_approx_date,
         'epoch': orbit_ecliptic.epoch.iso
     }
     
     return result
-
-
-from schemes import Observation
-
-observations = [
-    Observation(date=Time('2007-12-28').strftime('%Y-%m-%dT%H:%M:%S'), directAscension=93.00, celestialDeclination=26.77),
-    Observation(date=Time('2010-01-29').strftime('%Y-%m-%dT%H:%M:%S'), directAscension=133.50, celestialDeclination=22.15),
-    Observation(date=Time('2012-03-03').strftime('%Y-%m-%dT%H:%M:%S'), directAscension=178.00, celestialDeclination=10.28),
-    Observation(date=Time('2014-04-08').strftime('%Y-%m-%dT%H:%M:%S'), directAscension=198.50, celestialDeclination=-5.13),
-    Observation(date=Time('2016-05-22').strftime('%Y-%m-%dT%H:%M:%S'), directAscension=239.50, celestialDeclination=-21.65),
-    Observation(date=Time('2018-07-27').strftime('%Y-%m-%dT%H:%M:%S'), directAscension=308.25, celestialDeclination=-25.50),
-    Observation(date=Time('2020-10-13').strftime('%Y-%m-%dT%H:%M:%S'), directAscension=20.50, celestialDeclination=5.43),
-]
-
-obs_list = ObservationsList(observations=observations)
-
-result = CalculateOrbitFromObservations(obs_list)
-
-
-print(f"Большая полуось:     {result['largeSemiAxis']:.4f} AU")
-print(f"Эксцентриситет:      {result['eccentricity']:.6f}")
-print(f"Наклонение:          {result['inclination']:.3f}°")
-print(f"Долгота узла (Ω):    {result['longitude']:.3f}°")
-print(f"Аргумент перицентра: {result['pericenter']:.3f}°")
-print(f"Истинная аномалия:   {result['trueAnomaly']:.3f}°")
-print(f"Эпоха:               {result['epoch']}")
