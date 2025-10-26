@@ -17,6 +17,12 @@ export const astroService = {
             'method': 'GET',
         },
     ),
+    deleteData: async (id) => await fetch(
+        API_ENDPOINTS.getHisotry + `/${id}`,
+        {
+            'method': 'DELETE'
+        }
+    ),
 };
 
 export default astroService;

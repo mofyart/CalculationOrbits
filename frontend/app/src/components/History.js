@@ -5,7 +5,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import astroService from '../api/apiClient';
 
-function HistoryCard({data, onSelect }) {
+function HistoryCard({data, onSelect}) {
   return (
     <div>
       <button className="btn btn-outline-primary" onClick={() => onSelect(data)}>
@@ -49,7 +49,7 @@ function History({onSelect}) {
   return (
     <div>
       <button 
-        className="btn btn-primary w-100" 
+        className="btn btn-primary w-100 mb-5" 
         onClick={fetchHistory}
         disabled={isLoading}
       >
