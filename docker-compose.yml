@@ -8,6 +8,7 @@ services:
       - "80:80"
     depends_on:
       - backend
+      - astra-backend
     restart: unless-stopped
 
   astra-backend:
